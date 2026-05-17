@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Validador Automático · Función SI en Excel (TP Completo)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    body {
+      background: #eef2f9;
+      margin: 0;
+      padding: 24px 20px;
+      color: #1a2c3e;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1f5e7e, #0f3b4f);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+    }
+    .subtitulo {
+      border-left: 5px solid #2c7da0;
+      padding-left: 18px;
+      margin: 8px 0 28px 0;
+      color: #2c5a6e;
+      font-weight: 500;
+    }
+    .card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+      margin-bottom: 40px;
+      overflow-x: auto;
+      border: 1px solid #dce5ec;
+    }
+    .card-header {
+      background: #f9fcff;
+      padding: 18px 24px;
+      border-bottom: 2px solid #e2edf2;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .card-header h2 {
+      margin: 0;
+      font-weight: 650;
+      font-size: 1.45rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-ej {
+      background: #1e566e;
+      color: white;
+      font-weight: bold;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 40px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: white;
+      border: 1px solid #cbdae9;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.85rem;
+      color: #1f4e6e;
+    }
+    button.primary {
+      background: #1f5e7e;
+      border-color: #1f5e7e;
+      color: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    button.primary:hover {
+      background: #0e445f;
+      transform: translateY(-1px);
+    }
+    button:hover {
+      background: #e6f0f9;
+      border-color: #8ba9c2;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th {
+      background: #f0f6fa;
+      padding: 14px 10px;
+      text-align: center;
+      font-weight: 700;
+      color: #0b4a65;
+      border-bottom: 1px solid #cbdae9;
+    }
+    td {
+      padding: 12px 6px;
+      text-align: center;
+      border-bottom: 1px solid #e6edf2;
+      vertical-align: middle;
+    }
+    .dato-fijo {
+      background-color: #fef7e0;
+      font-weight: 600;
+      font-family: monospace;
+    }
+    input, select {
+      width: 130px;
+      padding: 8px 6px;
+      text-align: center;
+      border: 1px solid #cbdae9;
+      border-radius: 24px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: white;
+    }
+    select {
+      width: 120px;
+      cursor: pointer;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2c7da0;
+      box-shadow: 0 0 0 2px rgba(44,125,160,0.2);
+    }
+    .estado {
+      font-weight: 600;
+      min-width: 110px;
+      text-align: center;
+    }
+    .correcto {
+      color: #0f6e3f;
+      background: #dff9e6;
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+    .incorrecto {
+      color: #b91c1c;
+      background: #ffe6e5;
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+    .mensaje-resumen {
+      background: #eaf4fc;
+      padding: 12px 20px;
+      border-radius: 32px;
+      font-weight: 500;
+      margin: 12px 20px 20px 20px;
+      text-align: center;
+    }
+    .contador-box {
+      display: inline-flex;
+      gap: 20px;
+      background: #eef2fa;
+      padding: 8px 16px;
+      border-radius: 60px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    .contador-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #6082a0;
+      border-top: 1px solid #cde0ec;
+      padding-top: 24px;
+    }
+    @media (max-width: 800px) {
+      td, th { padding: 8px 3px; }
+      input, select { width: 100px; font-size: 0.7rem; }
+      .card-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>📐 Validador Automático · Función SI</h1>
+  <div class="subtitulo">✅ Actividad "TP Función Si.pdf" - Ejercicios de Excel con condiciones lógicas, conteo y validación de resultados.</div>
+
+  <!-- ===================== EJERCICIO 1 : ALUMNOS ===================== -->
+  <div class="card">
+    <div class="card-header">
+      <h2><span class="badge-ej">📖 EJERCICIO 1</span> Notas y Promedio (SI: Aprobado/Desaprobado)</h2>
+      <div class="btn-group">
+        <button class="validar-seccion" data-seccion="alumnos">✔️ Validar sección</button>
+        <button class="rellenar-seccion" data-seccion="alumnos">📥 Mostrar respuestas correctas</button>
+      </div>
+    </div>
+    <div style="overflow-x: auto;">
+      <table id="tabla-alumnos">
+        <thead>
+          <tr><th>Nombre</th><th>Matemática</th><th>Lengua</th><th>Historia</th><th>Promedio (entero) <br> (tú cálculo)</th><th>Resultado (Aprobado/Desaprobado)</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="tbody-alumnos"></tbody>
+      </table>
+    </div>
+    <div class="contador-box" style="justify-content: space-between; align-items: center; flex-wrap: wrap;">
+      <div class="contador-item"><strong>📊 Cantidad de aprobados (tú respuesta):</strong> <input type="number" id="totalAprobadosUser" placeholder="N° aprobados" style="width: 100px;"></div>
+      <div class="contador-item"><strong>✅ Cantidad correcta:</strong> <span id="totalAprobadosCorrecto">--</span></div>
+      <button id="validarConteoAprobados" style="background:#e6f0f9;">🔍 Validar conteo</button>
+    </div>
+    <div class="mensaje-resumen" id="resumen-alumnos"></div>
+    <div class="nota-extra" style="background: #fef3c7; margin: 0 20px 20px 20px; padding: 8px; border-radius: 20px; font-size:0.8rem;">📌 Promedio = (Matemática+Lengua+Historia)/3 , redondeado a entero. Si promedio >=6 → Aprobado , sino Desaprobado.</div>
+  </div>
+
+  <!-- ===================== EJERCICIO 2 : CHEQUES ===================== -->
+  <div class="card">
+    <div class="card-header">
+      <h2><span class="badge-ej">🏦 EJERCICIO 2</span> Cheques - Estado (Aprobado/Rechazado) y conteos</h2>
+      <div class="btn-group">
+        <button class="validar-seccion" data-seccion="cheques">✔️ Validar sección</button>
+        <button class="rellenar-seccion" data-seccion="cheques">📥 Mostrar respuestas correctas</button>
+      </div>
+    </div>
+    <div style="overflow-x: auto;">
+      <table id="tabla-cheques">
+        <thead>
+          <tr><th>N° Cheque</th><th>Banco</th><th>Monto Cheque ($)</th><th>Saldo Cta. Cte ($)</th><th>Estado (Aprobado/Rechazado)</th><th>Validación</th></tr>
+        </thead>
+        <tbody id="tbody-cheques"></tbody>
+      </table>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; margin: 10px 20px;">
+      <div class="contador-item"><strong>💰 Cheques > $100.000 (tu cuenta):</strong> <input type="number" id="chequesMayor100kUser" placeholder="Cantidad" style="width:100px"></div>
+      <div class="contador-item"><strong>✅ Cheques > $100.000 (correcto):</strong> <span id="chequesMayor100kCorrecto">--</span></div>
+      <div class="contador-item"><strong>✅ Estados Aprobados (tu cuenta):</strong> <input type="number" id="estadosAprobadosUser" placeholder="Cantidad" style="width:100px"></div>
+      <div class="contador-item"><strong>✅ Aprobados correctos:</strong> <span id="estadosAprobadosCorrecto">--</span></div>
+      <button id="validarConteosCheques" style="background:#e6f0f9;">🔍 Validar ambos conteos</button>
+    </div>
+    <div class="mensaje-resumen" id="resumen-cheques"></div>
+    <div class="nota-extra" style="background: #fef3c7; margin: 0 20px 20px 20px; padding: 8px; border-radius: 20px;">⚖️ Estado = Aprobado si Saldo en Cta. Cte ≥ Monto Cheque, en caso contrario Rechazado.</div>
+  </div>
+
+  <!-- ===================== EJERCICIO 3 : VENDEDORES (COMISIÓN + APTO) ===================== -->
+  <div class="card">
+    <div class="card-header">
+      <h2><span class="badge-ej">👔 EJERCICIO 3</span> Vendedores: Comisión (SI) + Apto (múltiples condiciones)</h2>
+      <div class="btn-group">
+        <button class="validar-seccion" data-seccion="vendedores">✔️ Validar sección</button>
+        <button class="rellenar-seccion" data-seccion="vendedores">📥 Mostrar respuestas correctas</button>
+      </div>
+    </div>
+    <div style="overflow-x: auto;">
+      <table id="tabla-vendedores">
+        <thead>
+          <tr><th>Vendedor</th><th>Edad</th><th>Ciudad</th><th>Profesión</th><th>Ventas ($)</th><th>Sueldo ($)</th><th>Sexo (selecciona)</th><th>Comisión ($) <br> (tu cálculo)</th><th>Respuesta (Apto/No)</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="tbody-vendedores"></tbody>
+      </table>
+    </div>
+    <div class="mensaje-resumen" id="resumen-vendedores"></div>
+    <div class="nota-extra" style="background: #fef3c7; margin: 0 20px 20px 20px; padding: 8px; border-radius: 20px;">
+      💡 <strong>Reglas:</strong> Comisión = Ventas * 10% si (Ciudad = "Rosario" o Ventas > 5.000.000) , sino 5%. <br>
+      ✅ Respuesta "Apto" si (Edad > 30 o Sueldo > 1.000.000 o Profesión = "Ing. en Sistemas" o Sexo = "Varón") , caso contrario "No". 
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0 10px;">
+    <button id="validarTodoBtn" class="primary" style="padding: 10px 32px;">✅ VALIDAR TODO</button>
+    <button id="limpiarTodoBtn" style="padding: 10px 28px;">🧹 Limpiar todos los campos</button>
+  </div>
+  <footer>
+    Validador automático basado en el PDF "TP Función Si.pdf". Para el Ejercicio 3 se agregó columna Sexo (requerido por condición). Los valores correctos se calculan dinámicamente según la lógica especificada.
+  </footer>
+</div>
+
+<script>
+  // --------------------------------------------------------------
+  // DATOS EXTRAÍDOS DE LA ACTIVIDAD
+  // --------------------------------------------------------------
+
+  // EJERCICIO 1 - ALUMNOS
+  const alumnosData = [
+    { nombre: "Jessica", mat: 7, len: 5, his: 3 },
+    { nombre: "Raúl", mat: 6, len: 6, his: 5 },
+    { nombre: "Pablo", mat: 7, len: 8, his: 9 },
+    { nombre: "Graciela", mat: 5, len: 4, his: 9 },
+    { nombre: "Nora", mat: 6, len: 8, his: 5 },
+    { nombre: "Paola", mat: 5, len: 6, his: 7 },
+    { nombre: "Carlos", mat: 7, len: 5, his: 4 },
+    { nombre: "Ricardo", mat: 4, len: 10, his: 5 }  // interpretación: 4,10,5
+  ];
+
+  function calcularPromedioCorrecto(alumno) {
+    let suma = alumno.mat + alumno.len + alumno.his;
+    let promedio = suma / 3;
+    return Math.round(promedio); // entero redondeado
+  }
+  function calcularResultadoCorrecto(promedioEntero) {
+    return promedioEntero >= 6 ? "Aprobado" : "Desaprobado";
+  }
+
+  // EJERCICIO 2 - CHEQUES
+  const chequesData = [
+    { nro: "1445-84", banco: "Nación", monto: 49200, saldo: 50000 },
+    { nro: "1547-82", banco: "Santa Fe", monto: 58600, saldo: 50000 },
+    { nro: "1598-58", banco: "Nación", monto: 558400, saldo: 1000000 },
+    { nro: "1654-31", banco: "Nación", monto: 25487, saldo: 30000 },
+    { nro: "2658-46", banco: "Santa Fe", monto: 53300, saldo: 70000 },
+    { nro: "3216-51", banco: "Nación", monto: 69000, saldo: 65000 },
+    { nro: "3216-54", banco: "Nación", monto: 73290, saldo: 73000 },
+    { nro: "3256-51", banco: "Nación", monto: 254000, saldo: 300000 },
+    { nro: "3625-14", banco: "Nación", monto: 84500, saldo: 90000 },
+    { nro: "5879-55", banco: "Santa Fe", monto: 187520, saldo: 150000 },
+    { nro: "6958-42", banco: "Santa Fe", monto: 87000, saldo: 85000 },
+    { nro: "6959-22", banco: "Santa Fe", monto: 56700, saldo: 56000 },
+    { nro: "6985-47", banco: "Santa Fe", monto: 258400, saldo: 300000 }
+  ];
+  function estadoChequeCorrecto(monto, saldo) {
+    return saldo >= monto ? "Aprobado" : "Rechazado";
+  }
+
+  // EJERCICIO 3 - VENDEDORES (datos)
+  const vendedoresData = [
+    { nombre: "Luis", edad: 31, ciudad: "Rosario", profesion: "Ing. en Sistemas", ventas: 4000000, sueldo: 1200000, sexoSugerido: "Varón" },
+    { nombre: "Pedro", edad: 45, ciudad: "Córdoba", profesion: "Administración", ventas: 6000000, sueldo: 580000, sexoSugerido: "Varón" },
+    { nombre: "Juan", edad: 27, ciudad: "Rosario", profesion: "Ing. en Sistemas", ventas: 3000000, sueldo: 1100000, sexoSugerido: "Varón" },
+    { nombre: "María", edad: 36, ciudad: "Paraná", profesion: "Administración", ventas: 8000000, sueldo: 850000, sexoSugerido: "Mujer" },
+    { nombre: "Verónica", edad: 32, ciudad: "Santa Fe", profesion: "Contaduría", ventas: 7000000, sueldo: 1400000, sexoSugerido: "Mujer" },
+    { nombre: "Luisa", edad: 33, ciudad: "Rosario", profesion: "Ing. en Sistemas", ventas: 4000000, sueldo: 1200000, sexoSugerido: "Mujer" },
+    { nombre: "Marisa", edad: 45, ciudad: "Córdoba", profesion: "Administración", ventas: 6000000, sueldo: 580000, sexoSugerido: "Mujer" },
+    { nombre: "Juana", edad: 27, ciudad: "Rosario", profesion: "Ing. en Sistemas", ventas: 3000000, sueldo: 1100000, sexoSugerido: "Mujer" },
+    { nombre: "María Belén", edad: 36, ciudad: "Paraná", profesion: "Administración", ventas: 8000000, sueldo: 850000, sexoSugerido: "Mujer" },
+    { nombre: "Gabriela", edad: 32, ciudad: "Santa Fe", profesion: "Contaduría", ventas: 7000000, sueldo: 1400000, sexoSugerido: "Mujer" }
+  ];
+
+  function comisionCorrecta(vendedor) {
+    let tasa = (vendedor.ciudad === "Rosario" || vendedor.ventas > 5000000) ? 0.10 : 0.05;
+    return vendedor.ventas * tasa;
+  }
+  function respuestaAptoCorrecta(vendedor, sexoSeleccionado) {
+    const condicion = (vendedor.edad > 30) || (vendedor.sueldo > 1000000) || (vendedor.profesion === "Ing. en Sistemas") || (sexoSeleccionado === "Varón");
+    return condicion ? "Apto" : "No";
+  }
+
+  // --------------------------------------------------------------
+  // RENDERIZADO DE TABLAS
+  // --------------------------------------------------------------
+  function renderAlumnos() {
+    const tbody = document.getElementById('tbody-alumnos');
+    tbody.innerHTML = '';
+    alumnosData.forEach((a, idx) => {
+      const row = tbody.insertRow();
+      row.insertCell(0).innerText = a.nombre;
+      row.insertCell(1).innerHTML = `<span class="dato-fijo">${a.mat}</span>`;
+      row.insertCell(2).innerHTML = `<span class="dato-fijo">${a.len}</span>`;
+      row.insertCell(3).innerHTML = `<span class="dato-fijo">${a.his}</span>`;
+      row.insertCell(4).innerHTML = `<input type="number" id="prom_${idx}" placeholder="Promedio entero">`;
+      row.insertCell(5).innerHTML = `<input type="text" id="res_${idx}" placeholder="Aprobado/Desaprobado" list="opcionesResultado"><datalist id="opcionesResultado"><option>Aprobado</option><option>Desaprobado</option></datalist>`;
+      row.insertCell(6).innerHTML = `<span id="alum_status_${idx}" class="estado">⚪</span>`;
+    });
+    actualizarConteoAprobadosCorrecto();
+  }
+
+  function renderCheques() {
+    const tbody = document.getElementById('tbody-cheques');
+    tbody.innerHTML = '';
+    chequesData.forEach((ch, idx) => {
+      const row = tbody.insertRow();
+      row.insertCell(0).innerText = ch.nro;
+      row.insertCell(1).innerText = ch.banco;
+      row.insertCell(2).innerHTML = `<span class="dato-fijo">$${ch.monto.toLocaleString()}</span>`;
+      row.insertCell(3).innerHTML = `<span class="dato-fijo">$${ch.saldo.toLocaleString()}</span>`;
+      row.insertCell(4).innerHTML = `<input type="text" id="estado_${idx}" placeholder="Aprobado/Rechazado" list="estadosList"><datalist id="estadosList"><option>Aprobado</option><option>Rechazado</option></datalist>`;
+      row.insertCell(5).innerHTML = `<span id="cheq_status_${idx}" class="estado">⚪</span>`;
+    });
+    actualizarContadoresChequesCorrectos();
+  }
+
+  function renderVendedores() {
+    const tbody = document.getElementById('tbody-vendedores');
+    tbody.innerHTML = '';
+    vendedoresData.forEach((v, idx) => {
+      const row = tbody.insertRow();
+      row.insertCell(0).innerText = v.nombre;
+      row.insertCell(1).innerHTML = `<span class="dato-fijo">${v.edad}</span>`;
+      row.insertCell(2).innerHTML = `<span class="dato-fijo">${v.ciudad}</span>`;
+      row.insertCell(3).innerHTML = `<span class="dato-fijo">${v.profesion}</span>`;
+      row.insertCell(4).innerHTML = `<span class="dato-fijo">$${v.ventas.toLocaleString()}</span>`;
+      row.insertCell(5).innerHTML = `<span class="dato-fijo">$${v.sueldo.toLocaleString()}</span>`;
+      row.insertCell(6).innerHTML = `<select id="sexo_${idx}"><option value="Mujer">Mujer</option><option value="Varón">Varón</option></select>`;
+      row.insertCell(7).innerHTML = `<input type="number" step="any" id="comision_${idx}" placeholder="Comisión \$">`;
+      row.insertCell(8).innerHTML = `<input type="text" id="apto_${idx}" placeholder="Apto/No" list="aptoList"><datalist id="aptoList"><option>Apto</option><option>No</option></datalist>`;
+      row.insertCell(9).innerHTML = `<span id="vend_status_${idx}" class="estado">⚪</span>`;
+    });
+  }
+
+  // ---------- ACTUALIZAR CONTADORES CORRECTOS (EJ2) ----------
+  function actualizarContadoresChequesCorrectos() {
+    const mayores100k = chequesData.filter(ch => ch.monto > 100000).length;
+    document.getElementById('chequesMayor100kCorrecto').innerText = mayores100k;
+    const aprobadosCorrectos = chequesData.filter(ch => estadoChequeCorrecto(ch.monto, ch.saldo) === "Aprobado").length;
+    document.getElementById('estadosAprobadosCorrecto').innerText = aprobadosCorrectos;
+  }
+  function actualizarConteoAprobadosCorrecto() {
+    let correctCount = 0;
+    alumnosData.forEach(al => {
+      const prom = calcularPromedioCorrecto(al);
+      if (calcularResultadoCorrecto(prom) === "Aprobado") correctCount++;
+    });
+    document.getElementById('totalAprobadosCorrecto').innerText = correctCount;
+  }
+
+  // ---------- VALIDACIONES POR SECCION ----------
+  function validarAlumnos() {
+    let aciertos = 0;
+    for (let i=0; i<alumnosData.length; i++) {
+      const alum = alumnosData[i];
+      const promCorrecto = calcularPromedioCorrecto(alum);
+      const resCorrecto = calcularResultadoCorrecto(promCorrecto);
+      const userProm = parseFloat(document.getElementById(`prom_${i}`)?.value);
+      const userRes = document.getElementById(`res_${i}`)?.value?.trim();
+      const statusSpan = document.getElementById(`alum_status_${i}`);
+      let promOk = !isNaN(userProm) && userProm === promCorrecto;
+      let resOk = (userRes === resCorrecto);
+      if (promOk && resOk) {
+        statusSpan.innerHTML = '<span class="correcto">✓ Correcto</span>';
+        aciertos++;
+      } else {
+        let msg = '';
+        if (!promOk) msg += `Promedio (${promCorrecto}) `;
+        if (!resOk) msg += `Resultado (${resCorrecto})`;
+        statusSpan.innerHTML = `<span class="incorrecto">✗ ${msg}</span>`;
+      }
+    }
+    document.getElementById('resumen-alumnos').innerText = `📊 Alumnos correctos: ${aciertos}/${alumnosData.length} (promedio+resultado)`;
+    return aciertos;
+  }
+
+  function validarCheques() {
+    let aciertos = 0;
+    for (let i=0; i<chequesData.length; i++) {
+      const ch = chequesData[i];
+      const estadoCorrecto = estadoChequeCorrecto(ch.monto, ch.saldo);
+      const userEstado = document.getElementById(`estado_${i}`)?.value?.trim();
+      const statusSpan = document.getElementById(`cheq_status_${i}`);
+      if (userEstado === estadoCorrecto) {
+        statusSpan.innerHTML = '<span class="correcto">✓ Correcto</span>';
+        aciertos++;
+      } else {
+        statusSpan.innerHTML = `<span class="incorrecto">✗ Correcto: ${estadoCorrecto}</span>`;
+      }
+    }
+    document.getElementById('resumen-cheques').innerText = `🏦 Cheques correctos: ${aciertos}/${chequesData.length} estados`;
+    return aciertos;
+  }
+
+  function validarVendedores() {
+    let aciertos = 0;
+    for (let i=0; i<vendedoresData.length; i++) {
+      const v = vendedoresData[i];
+      const sexo = document.getElementById(`sexo_${i}`)?.value;
+      const comisionCorrectaVal = comisionCorrecta(v);
+      const aptoCorrecto = respuestaAptoCorrecta(v, sexo);
+      const userComision = parseFloat(document.getElementById(`comision_${i}`)?.value);
+      const userApto = document.getElementById(`apto_${i}`)?.value?.trim();
+      const statusSpan = document.getElementById(`vend_status_${i}`);
+      let comisionOk = !isNaN(userComision) && Math.abs(userComision - comisionCorrectaVal) <= 0.5;
+      let aptoOk = (userApto === aptoCorrecto);
+      if (comisionOk && aptoOk) {
+        statusSpan.innerHTML = '<span class="correcto">✓ Correcto</span>';
+        aciertos++;
+      } else {
+        let errores = [];
+        if (!comisionOk) errores.push(`Comisión $${comisionCorrectaVal.toFixed(2)}`);
+        if (!aptoOk) errores.push(`Respuesta ${aptoCorrecto}`);
+        statusSpan.innerHTML = `<span class="incorrecto">✗ ${errores.join(', ')}</span>`;
+      }
+    }
+    document.getElementById('resumen-vendedores').innerText = `👔 Vendedores correctos: ${aciertos}/${vendedoresData.length} (comisión + apto)`;
+    return aciertos;
+  }
+
+  // RELLENAR RESPUESTAS CORRECTAS
+  function rellenarAlumnos() {
+    for (let i=0; i<alumnosData.length; i++) {
+      const prom = calcularPromedioCorrecto(alumnosData[i]);
+      const res = calcularResultadoCorrecto(prom);
+      const inputProm = document.getElementById(`prom_${i}`);
+      const inputRes = document.getElementById(`res_${i}`);
+      if (inputProm) inputProm.value = prom;
+      if (inputRes) inputRes.value = res;
+    }
+    validarAlumnos();
+  }
+  function rellenarCheques() {
+    for (let i=0; i<chequesData.length; i++) {
+      const estado = estadoChequeCorrecto(chequesData[i].monto, chequesData[i].saldo);
+      const inputEst = document.getElementById(`estado_${i}`);
+      if (inputEst) inputEst.value = estado;
+    }
+    validarCheques();
+  }
+  function rellenarVendedores() {
+    for (let i=0; i<vendedoresData.length; i++) {
+      const v = vendedoresData[i];
+      const sexoActual = document.getElementById(`sexo_${i}`)?.value;
+      const comisionVal = comisionCorrecta(v);
+      const aptoVal = respuestaAptoCorrecta(v, sexoActual);
+      const inputCom = document.getElementById(`comision_${i}`);
+      const inputApt = document.getElementById(`apto_${i}`);
+      if (inputCom) inputCom.value = comisionVal.toFixed(2);
+      if (inputApt) inputApt.value = aptoVal;
+    }
+    validarVendedores();
+  }
+
+  function validarConteosCheques() {
+    const userMayor = parseInt(document.getElementById('chequesMayor100kUser').value);
+    const correctoMayor = chequesData.filter(ch => ch.monto > 100000).length;
+    const userAprob = parseInt(document.getElementById('estadosAprobadosUser').value);
+    const correctoAprob = chequesData.filter(ch => estadoChequeCorrecto(ch.monto, ch.saldo) === "Aprobado").length;
+    let msg = '';
+    let ok1 = (userMayor === correctoMayor);
+    let ok2 = (userAprob === correctoAprob);
+    if (ok1 && ok2) msg = '✅ Ambos conteos correctos.';
+    else msg = `⚠️ Cheques >100k: ${ok1 ? '✔' : '✗ (debe ser '+correctoMayor+')'} | Aprobados: ${ok2 ? '✔' : '✗ (debe ser '+correctoAprob+')'}`;
+    alert(msg);
+  }
+
+  function validarConteoAprobadosAlumnos() {
+    const userCount = parseInt(document.getElementById('totalAprobadosUser').value);
+    const correctCount = parseInt(document.getElementById('totalAprobadosCorrecto').innerText);
+    if (userCount === correctCount) alert('✅ Cantidad de aprobados correcta.');
+    else alert(`❌ Incorrecto. Cantidad correcta de aprobados: ${correctCount}`);
+  }
+
+  function limpiarTodo() {
+    document.querySelectorAll('input[type="number"], input[type="text"]').forEach(inp => inp.value = '');
+    document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+    document.querySelectorAll('.estado').forEach(span => span.innerHTML = '⚪');
+    document.getElementById('resumen-alumnos').innerText = '';
+    document.getElementById('resumen-cheques').innerText = '';
+    document.getElementById('resumen-vendedores').innerText = '';
+    document.getElementById('totalAprobadosUser').value = '';
+    document.getElementById('chequesMayor100kUser').value = '';
+    document.getElementById('estadosAprobadosUser').value = '';
+  }
+
+  function validarTodo() {
+    validarAlumnos();
+    validarCheques();
+    validarVendedores();
+  }
+
+  // EVENTOS INICIALES
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAlumnos();
+    renderCheques();
+    renderVendedores();
+    document.querySelectorAll('.validar-seccion').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const sec = btn.getAttribute('data-seccion');
+        if (sec === 'alumnos') validarAlumnos();
+        else if (sec === 'cheques') validarCheques();
+        else if (sec === 'vendedores') validarVendedores();
+      });
+    });
+    document.querySelectorAll('.rellenar-seccion').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const sec = btn.getAttribute('data-seccion');
+        if (sec === 'alumnos') rellenarAlumnos();
+        else if (sec === 'cheques') rellenarCheques();
+        else if (sec === 'vendedores') rellenarVendedores();
+      });
+    });
+    document.getElementById('validarTodoBtn').addEventListener('click', validarTodo);
+    document.getElementById('limpiarTodoBtn').addEventListener('click', limpiarTodo);
+    document.getElementById('validarConteosCheques').addEventListener('click', validarConteosCheques);
+    document.getElementById('validarConteoAprobados').addEventListener('click', validarConteoAprobadosAlumnos);
+  });
+</script>
+</body>
+</html>
